@@ -1,4 +1,6 @@
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+// Minimal type for Sanity image references — avoids fragile deep import from @sanity/image-url
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SanityImageSource = Record<string, any>;
 
 export interface SanityProduct {
   _id: string;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/image";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@/lib/sanity/types";
 
 interface InstagramGridProps {
   images: Array<SanityImageSource & { alt?: string }>;
