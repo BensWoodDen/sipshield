@@ -82,7 +82,7 @@ function FeaturedCard({ product }: { product: Product }) {
 function CompactCard({ product }: { product: Product }) {
   return (
     <article className="group relative bg-neutral-50 rounded-lg overflow-hidden border border-neutral-200 transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-lg hover:border-neutral-300">
-      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-oak-200 to-oak-100">
+      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-oak-200 to-oak-100">
         {product.image ? (
           <Image
             src={product.image.url}
