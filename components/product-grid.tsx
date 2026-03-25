@@ -52,7 +52,7 @@ export function ProductGrid({ heading, products }: ProductGridProps) {
       {products.length === 1 ? (
         <ProductCard product={toCardProduct(first, "featured")} layout="featured" />
       ) : products.length <= 3 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
             <ProductCard product={toCardProduct(first, "featured")} layout="featured" />
           </div>
@@ -61,17 +61,17 @@ export function ProductGrid({ heading, products }: ProductGridProps) {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Row 1: featured left (spans 2 on lg), 2 compact right */}
-          <div className="md:col-span-2 lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Row 1: product 1 spans 2 cols, product 2 spans 1 */}
+          <div className="md:col-span-2">
             <ProductCard product={toCardProduct(products[0], "featured")} layout="featured" />
           </div>
-          <div className="flex flex-col gap-4">
-            <ProductCard product={toCardProduct(products[1], "compact")} layout="compact" />
-            <ProductCard product={toCardProduct(products[2], "compact")} layout="compact" />
+          <ProductCard product={toCardProduct(products[1], "compact")} layout="compact" />
+          {/* Row 2: product 3 spans 1 col, product 4 spans 2 */}
+          <ProductCard product={toCardProduct(products[2], "compact")} layout="compact" />
+          <div className="md:col-span-2">
+            <ProductCard product={toCardProduct(products[3], "featured")} layout="featured" />
           </div>
-          {/* Row 2: single compact card */}
-          <ProductCard product={toCardProduct(products[3], "compact")} layout="compact" />
         </div>
       )}
     </section>
