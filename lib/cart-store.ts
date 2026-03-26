@@ -15,6 +15,8 @@ export interface CartItem {
   quantity: number;
   image?: string;
   stripePriceId: string;
+  personalisationText?: string;
+  personalisationImage?: string; // Supabase file path
 }
 
 interface CartState {
