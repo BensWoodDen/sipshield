@@ -14,8 +14,7 @@ const homepageQuery = `*[_type == "homepage"][0]{
     stripePriceId,
     images,
     tag,
-    personalisable,
-    personalisationLabel,
+    personalisation,
     variants
   },
   storyBand,

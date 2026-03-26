@@ -9,6 +9,12 @@ export interface ProductVariant {
   stripePriceId?: string;
 }
 
+export interface PersonalisationOption {
+  _key: string;
+  type: "text" | "image";
+  label: string;
+}
+
 export interface SanityProduct {
   _id: string;
   name: string;
@@ -19,8 +25,7 @@ export interface SanityProduct {
   stripePriceId: string;
   images?: SanityImageSource[];
   tag?: string;
-  personalisable?: boolean;
-  personalisationLabel?: string;
+  personalisation?: PersonalisationOption[];
   variants?: ProductVariant[];
 }
 

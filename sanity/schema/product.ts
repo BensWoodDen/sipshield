@@ -102,16 +102,40 @@ export const product = defineType({
       description: 'e.g. "New", "Popular", "Limited"',
     }),
     defineField({
-      name: "personalisable",
-      title: "Personalisable",
-      type: "boolean",
-      initialValue: false,
-    }),
-    defineField({
-      name: "personalisationLabel",
-      title: "Personalisation Label",
-      type: "string",
-      hidden: ({ parent }) => !parent?.personalisable,
+      name: "personalisation",
+      title: "Personalisation Options",
+      description:
+        "Add options customers can use to personalise this product. Leave empty if not personalisable.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "type",
+              title: "Type",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Text (name, initials, slogan)", value: "text" },
+                  { title: "Image (logo, design)", value: "image" },
+                ],
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "label",
+              title: "Label",
+              type: "string",
+              description: "Shown to the customer, e.g. \"Your engraving text\" or \"Upload your logo\"",
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: "label", subtitle: "type" },
+          },
+        },
+      ],
     }),
   ],
   preview: {
