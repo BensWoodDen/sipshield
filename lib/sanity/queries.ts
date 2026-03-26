@@ -1,5 +1,5 @@
 import { sanityClient } from "./client";
-import type { HomepageData, SiteSettings } from "./types";
+import type { HomepageData, SiteSettings, ShopPageData } from "./types";
 
 const homepageQuery = `*[_type == "homepage"][0]{
   hero,
@@ -30,4 +30,33 @@ export async function getHomepage(): Promise<HomepageData | null> {
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   return sanityClient.fetch(settingsQuery);
+}
+
+const shopPageQuery = `{
+  "hero": *[_type == "shopPage"][0]{
+    heroKicker,
+    heroHeadline,
+    heroBody
+  },
+  "families": *[_type == "productFamily"] | order(displayOrder asc) {
+    _id,
+    name,
+    slug,
+    description,
+    "products": *[_type == "product" && references(^._id)] | order(price asc) {
+      _id,
+      name,
+      slug,
+      description,
+      variant,
+      price,
+      stripePriceId,
+      images,
+      tag
+    }
+  }
+}`;
+
+export async function getShopPage(): Promise<ShopPageData> {
+  return sanityClient.fetch(shopPageQuery);
 }

@@ -43,3 +43,22 @@ export interface SiteSettings {
     instagram?: string;
   };
 }
+
+export interface ShopPageHero {
+  heroKicker?: string;
+  heroHeadline: string;
+  heroBody?: string;
+}
+
+export interface ProductFamily {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  description?: string;
+  products: SanityProduct[];
+}
+
+export interface ShopPageData {
+  hero: ShopPageHero | null;
+  families: ProductFamily[];
+}
