@@ -2,6 +2,13 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SanityImageSource = Record<string, any>;
 
+export interface ProductVariant {
+  _key: string;
+  name: string;
+  price: number;
+  stripePriceId?: string;
+}
+
 export interface SanityProduct {
   _id: string;
   name: string;
@@ -12,6 +19,9 @@ export interface SanityProduct {
   stripePriceId: string;
   images?: SanityImageSource[];
   tag?: string;
+  personalisable?: boolean;
+  personalisationLabel?: string;
+  variants?: ProductVariant[];
 }
 
 export interface HomepageData {

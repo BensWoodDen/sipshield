@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "./add-to-cart-button";
+import { VariantProductCard } from "./variant-product-card";
+
+export interface ProductVariantOption {
+  _key: string;
+  name: string;
+  price: number;
+  stripePriceId?: string;
+}
 
 export interface Product {
   id: string;
@@ -17,6 +25,7 @@ export interface Product {
     height: number;
   };
   tag?: string;
+  variants?: ProductVariantOption[];
 }
 
 interface ProductCardProps {
@@ -25,6 +34,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, layout = "compact" }: ProductCardProps) {
+  if (product.variants && product.variants.length > 0 && layout === "compact") {
+    return <VariantProductCard product={product} />;
+  }
   if (layout === "featured") {
     return <FeaturedCard product={product} />;
   }

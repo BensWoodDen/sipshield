@@ -13,7 +13,10 @@ const homepageQuery = `*[_type == "homepage"][0]{
     price,
     stripePriceId,
     images,
-    tag
+    tag,
+    personalisable,
+    personalisationLabel,
+    variants
   },
   storyBand,
   instagram
@@ -52,7 +55,10 @@ const shopPageQuery = `{
       price,
       stripePriceId,
       images,
-      tag
+      tag,
+      personalisable,
+      personalisationLabel,
+      variants
     }
   }
 }`;

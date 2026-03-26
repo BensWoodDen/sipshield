@@ -24,6 +24,12 @@ function toCardProduct(p: SanityProduct): Product {
         }
       : undefined,
     tag: p.tag,
+    variants: p.variants?.map((v) => ({
+      _key: v._key,
+      name: v.name,
+      price: v.price,
+      stripePriceId: v.stripePriceId,
+    })),
   };
 }
 

@@ -41,6 +41,47 @@ export const product = defineType({
       name: "stripePriceId",
       title: "Stripe Price ID",
       type: "string",
+      description: "Used when product has no size variants",
+      hidden: ({ parent }) =>
+        Array.isArray(parent?.variants) && parent.variants.length > 0,
+    }),
+    defineField({
+      name: "variants",
+      title: "Size Variants",
+      type: "array",
+      description:
+        "Add sizes if this product comes in multiple sizes. Leave empty for single-size products.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "name",
+              title: "Size Name",
+              type: "string",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "price",
+              title: "Price (£)",
+              type: "number",
+              validation: (rule) => rule.required().positive(),
+            }),
+            defineField({
+              name: "stripePriceId",
+              title: "Stripe Price ID",
+              type: "string",
+            }),
+          ],
+          preview: {
+            select: { title: "name", subtitle: "price" },
+            prepare: ({ title, subtitle }) => ({
+              title,
+              subtitle: subtitle ? `£${subtitle}` : undefined,
+            }),
+          },
+        },
+      ],
     }),
     defineField({
       name: "family",
