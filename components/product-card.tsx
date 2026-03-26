@@ -10,6 +10,12 @@ export interface ProductVariantOption {
   stripePriceId?: string;
 }
 
+export interface PersonalisationOption {
+  _key: string;
+  type: "text" | "image";
+  label: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -26,6 +32,7 @@ export interface Product {
   };
   tag?: string;
   variants?: ProductVariantOption[];
+  personalisation?: PersonalisationOption[];
 }
 
 interface ProductCardProps {
@@ -93,8 +100,8 @@ function FeaturedCard({ product }: { product: Product }) {
 
 function CompactCard({ product }: { product: Product }) {
   return (
-    <article className="group relative bg-neutral-50 rounded-lg overflow-hidden border border-neutral-200 transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-lg hover:border-neutral-300">
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-oak-200 to-oak-100">
+    <article className="group relative flex flex-col bg-neutral-50 rounded-lg overflow-hidden border border-neutral-200 transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-lg hover:border-neutral-300">
+      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-oak-200 to-oak-100">
         {product.image ? (
           <Image
             src={product.image.url}
@@ -102,7 +109,7 @@ function CompactCard({ product }: { product: Product }) {
             width={product.image.width}
             height={product.image.height}
             className="object-cover w-full h-full group-hover:scale-[1.02] transition-transform duration-300 ease-out"
-            sizes="(max-width: 768px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full text-oak-300 text-5xl">
@@ -116,16 +123,23 @@ function CompactCard({ product }: { product: Product }) {
         )}
       </div>
 
-      <div className="p-4 pb-5">
+      <div className="p-3 flex flex-col flex-1">
         <Link href="/shop" className="after:absolute after:inset-0" tabIndex={-1} aria-hidden="true" />
-        <h3 className="font-display text-[clamp(1.125rem,1.5vw+0.5rem,1.375rem)] text-charcoal mb-0.5">
+        <h3 className="font-display text-[clamp(0.9375rem,1vw+0.25rem,1.125rem)] text-charcoal mb-0.5">
           {product.name}
         </h3>
-        <p className="text-sm text-neutral-500 mb-4">
-          {product.variant}
-        </p>
-        <div className="flex items-center justify-between">
-          <span className="text-[clamp(1.125rem,1.5vw+0.5rem,1.375rem)] font-semibold text-oak-700">
+        {product.variant && (
+          <p className="text-sm text-neutral-500 mb-0.5">
+            {product.variant}
+          </p>
+        )}
+        {product.description && (
+          <p className="text-xs text-neutral-400 line-clamp-2 mb-2">
+            {product.description}
+          </p>
+        )}
+        <div className="flex items-center justify-between mt-auto">
+          <span className="text-base font-semibold text-oak-700">
             &pound;{product.price.toFixed(2)}
           </span>
           <span className="relative z-10">

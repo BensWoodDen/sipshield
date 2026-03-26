@@ -36,6 +36,7 @@ function toCardProduct(
       price: (v.stripePriceId ? stripePrices.get(v.stripePriceId) : undefined) ?? 0,
       stripePriceId: v.stripePriceId,
     })),
+    personalisation: p.personalisation,
   };
 }
 
