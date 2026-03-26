@@ -12,10 +12,21 @@ interface CheckoutItem {
 }
 
 export async function POST(request: NextRequest) {
+  try {
   const { items } = (await request.json()) as { items: CheckoutItem[] };
 
   if (!items || items.length === 0) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+  }
+
+  // Validate all items have a Stripe price ID
+  const invalidItems = items.filter((item) => !item.stripePriceId);
+  if (invalidItems.length > 0) {
+    console.error("Items missing stripePriceId:", invalidItems.map((i) => i.name));
+    return NextResponse.json(
+      { error: "Some items are missing pricing information" },
+      { status: 400 }
+    );
   }
 
   // Build line items for Stripe
@@ -67,4 +78,9 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json({ url: session.url });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Checkout failed";
+    console.error("Checkout error:", err);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
