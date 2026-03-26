@@ -1,6 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+/**
+ * Unique identifier for a cart line item. Must be stable across renders.
+ * Construction: `${sanityId}` for single-variant products,
+ * `${sanityId}-${variantKey}` for size-variant products.
+ */
 export interface CartItem {
   id: string;
   sanityId: string;
@@ -63,10 +68,12 @@ export const useCartStore = create<CartState>()(
         get().items.reduce((sum, item) => sum + item.quantity, 0),
 
       totalPrice: () =>
-        get().items.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
+        Math.round(
+          get().items.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ) * 100
+        ) / 100,
     }),
     {
       name: "sipshield-cart",
