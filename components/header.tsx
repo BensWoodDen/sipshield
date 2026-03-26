@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { CartButton } from "./cart-button";
+import { CartDrawer } from "./cart-drawer";
+import { useCartStore } from "@/lib/cart-store";
 
 const navLinks = [
   { href: "/shop", label: "Shop" },
@@ -13,6 +15,11 @@ const navLinks = [
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const items = useCartStore((s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
 
   useEffect(() => {
     function handleScroll() {
@@ -25,38 +32,48 @@ export function Header() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-[border-color,background-color,backdrop-filter] duration-200 ${
-        scrolled
-          ? "bg-cream/92 backdrop-blur-md border-b border-oak-100"
-          : "bg-cream border-b border-transparent"
-      }`}
-    >
-      <div className="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
-        <Link
-          href="/"
-          className="font-display text-2xl text-oak-800 hover:text-oak-700 transition-colors duration-100"
-        >
-          SipShield
-        </Link>
+    <>
+      <header
+        className={`sticky top-0 z-50 transition-[border-color,background-color,backdrop-filter] duration-200 ${
+          scrolled
+            ? "bg-cream/92 backdrop-blur-md border-b border-oak-100"
+            : "bg-cream border-b border-transparent"
+        }`}
+      >
+        <div className="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-display text-2xl text-oak-800 hover:text-oak-700 transition-colors duration-100"
+          >
+            SipShield
+          </Link>
 
-        <nav aria-label="Main navigation" className="hidden md:block">
-          <ul className="flex gap-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-neutral-600 font-medium hover:text-oak-700 transition-colors duration-100"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav aria-label="Main navigation" className="hidden md:block">
+            <ul className="flex gap-8">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-neutral-600 font-medium hover:text-oak-700 transition-colors duration-100"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <CartButton />
-      </div>
-    </header>
+          <CartButton onClick={() => setCartOpen(true)} />
+        </div>
+      </header>
+
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={items}
+        onUpdateQuantity={updateQuantity}
+        onRemove={removeItem}
+      />
+    </>
   );
 }
