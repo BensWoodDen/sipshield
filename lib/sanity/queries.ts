@@ -53,8 +53,7 @@ const shopPageQuery = `{
       stripePriceId,
       images,
       tag,
-      personalisable,
-      personalisationLabel,
+      personalisation,
       variants
     }
   }
