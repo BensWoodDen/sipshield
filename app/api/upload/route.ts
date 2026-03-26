@@ -7,6 +7,13 @@ const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 const BUCKET = "personalisation-uploads";
 
 export async function POST(request: NextRequest) {
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Upload service not configured" },
+      { status: 503 }
+    );
+  }
+
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
 
