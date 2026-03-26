@@ -1,33 +1,44 @@
 import { getShopPage } from "@/lib/sanity/queries";
+import { fetchStripePrices } from "@/lib/stripe";
 import { ShopHero } from "@/components/shop-hero";
 import { ProductCard } from "@/components/product-card";
 import { urlFor } from "@/lib/sanity/image";
 import type { SanityProduct } from "@/lib/sanity/types";
 import type { Product } from "@/components/product-card";
 
-function toCardProduct(p: SanityProduct): Product {
+function toCardProduct(
+  p: SanityProduct,
+  stripePrices: Map<string, number>,
+  familyDescription?: string
+): Product {
   const img = p.images?.[0];
+
+  // Resolve price: Stripe price (authoritative) → Sanity price (fallback)
+  const stripePrice = p.stripePriceId
+    ? stripePrices.get(p.stripePriceId)
+    : undefined;
+
   return {
     id: p._id,
     name: p.name,
     slug: p.slug.current,
     variant: p.variant || "",
-    price: p.price,
-    stripePriceId: p.stripePriceId,
-    description: p.description,
+    price: stripePrice ?? p.price ?? 0,
+    stripePriceId: p.stripePriceId ?? "",
+    description: p.description || familyDescription,
     image: img
       ? {
-          url: urlFor(img).width(600).height(450).url(),
+          url: urlFor(img).width(480).height(480).url(),
           alt: p.name,
-          width: 600,
-          height: 450,
+          width: 480,
+          height: 480,
         }
       : undefined,
     tag: p.tag,
     variants: p.variants?.map((v) => ({
       _key: v._key,
       name: v.name,
-      price: v.price,
+      price: (v.stripePriceId ? stripePrices.get(v.stripePriceId) : undefined) ?? v.price ?? 0,
       stripePriceId: v.stripePriceId,
     })),
   };
@@ -36,45 +47,32 @@ function toCardProduct(p: SanityProduct): Product {
 export default async function ShopPage() {
   const { hero, families } = await getShopPage();
 
+  // Collect all Stripe price IDs from all products and variants
+  const allPriceIds = families.flatMap((f) =>
+    f.products.flatMap((p) => [
+      p.stripePriceId,
+      ...(p.variants?.map((v) => v.stripePriceId) ?? []),
+    ])
+  );
+
+  const stripePrices = await fetchStripePrices(allPriceIds);
+
   return (
     <main>
       {hero && <ShopHero hero={hero} />}
 
       <div className="max-w-[1200px] mx-auto px-6 pb-16">
-        {families.map((family) => (
-          <section
-            key={family._id}
-            aria-labelledby={`family-${family._id}`}
-            className="mt-12 first:mt-0"
-          >
-            <h2
-              id={`family-${family._id}`}
-              className="font-display text-[clamp(1.25rem,2vw+0.5rem,1.75rem)] text-oak-800 mb-1"
-            >
-              {family.name}
-            </h2>
-            {family.description && (
-              <p className="text-neutral-500 text-[clamp(0.875rem,1vw+0.25rem,1rem)] mb-6 max-w-[60ch]">
-                {family.description}
-              </p>
-            )}
-            <div
-              className={`grid grid-cols-1 gap-4 ${
-                family.products.length <= 2
-                  ? "md:grid-cols-2"
-                  : "md:grid-cols-3"
-              }`}
-            >
-              {family.products.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  product={toCardProduct(product)}
-                  layout="compact"
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
+          {families.flatMap((family) =>
+            family.products.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={toCardProduct(product, stripePrices, family.description)}
+                layout="compact"
+              />
+            ))
+          )}
+        </div>
       </div>
     </main>
   );
