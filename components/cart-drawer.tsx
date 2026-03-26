@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { X, Minus, Plus } from "lucide-react";
+import { X, Minus, Plus, ImageIcon } from "lucide-react";
 
 interface CartItem {
   id: string;
@@ -10,6 +10,8 @@ interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  personalisationText?: string;
+  personalisationImage?: string;
 }
 
 interface CartDrawerProps {
@@ -137,10 +139,33 @@ export function CartDrawer({
                 key={item.id}
                 className="grid grid-cols-[56px_1fr_auto] gap-3 px-6 py-4 border-b border-neutral-100 items-center"
               >
-                <div className="w-14 h-14 rounded-md bg-oak-100 flex-shrink-0" />
+                <div className="w-14 h-14 rounded-md bg-oak-100 flex-shrink-0 overflow-hidden">
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
                 <div>
                   <p className="font-medium text-charcoal">{item.name}</p>
                   <p className="text-sm text-neutral-500">{item.variant}</p>
+                  {(item.personalisationText || item.personalisationImage) && (
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {item.personalisationText && (
+                        <span className="inline-flex items-center text-[0.6875rem] text-oak-700 bg-oak-50 border border-oak-100 rounded px-1.5 py-0.5">
+                          &ldquo;{item.personalisationText}&rdquo;
+                        </span>
+                      )}
+                      {item.personalisationImage && (
+                        <span className="inline-flex items-center gap-1 text-[0.6875rem] text-oak-700 bg-oak-50 border border-oak-100 rounded px-1.5 py-0.5">
+                          <ImageIcon className="w-3 h-3" />
+                          {item.personalisationImage.split("/").pop()}
+                        </span>
+                      )}
+                    </div>
+                  )}
                   <div className="inline-flex items-center border border-neutral-200 rounded-md overflow-hidden mt-2">
                     <button
                       onClick={() =>
