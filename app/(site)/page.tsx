@@ -1,4 +1,5 @@
 import { getHomepage, getSiteSettings } from "@/lib/sanity/queries";
+import { fetchStripePrices } from "@/lib/stripe";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";
 import { ProductGrid } from "@/components/product-grid";
@@ -11,7 +12,15 @@ export default async function Home() {
     getSiteSettings(),
   ]);
 
-  const instagramUrl = settings?.socialLinks?.instagram || "https://instagram.com/sipshield";
+  // Fetch Stripe prices for featured products
+  const featuredProducts = homepage?.featuredProducts ?? [];
+  const allPriceIds = featuredProducts.flatMap((p) => [
+    p.stripePriceId,
+    ...(p.variants?.map((v) => v.stripePriceId) ?? []),
+  ]);
+  const stripePrices = await fetchStripePrices(allPriceIds);
+
+  const instagramUrl = settings?.socialLinks?.instagram || "https://instagram.com/sipshielduk";
 
   return (
     <main>
@@ -20,7 +29,11 @@ export default async function Home() {
       {homepage?.trustBar && <TrustBar items={homepage.trustBar} />}
 
       {homepage?.featuredProducts && (
-        <ProductGrid heading="Featured Pieces" products={homepage.featuredProducts} />
+        <ProductGrid
+          heading="Featured Pieces"
+          products={homepage.featuredProducts}
+          stripePrices={stripePrices}
+        />
       )}
 
       {homepage?.storyBand && <StoryBand storyBand={homepage.storyBand} />}
