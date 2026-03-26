@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 60100 --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop sipshield-dev",
+    "pm2:logs": "pm2 logs sipshield-dev"
   },
   "dependencies": {
     "@sanity/client": "^7.20.0",
@@ -17,7 +20,8 @@
     "next-sanity": "^12.1.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "sanity": "^5.18.0"
+    "sanity": "^5.18.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
