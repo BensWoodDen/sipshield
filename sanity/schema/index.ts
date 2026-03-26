@@ -3,6 +3,7 @@ import { product } from "./product";
 import { page } from "./page";
 import { siteSettings } from "./site-settings";
 import { homepage } from "./homepage";
+import { shopPage } from "./shop-page";
 
 export const schemaTypes = [
   productFamily,
@@ -10,4 +11,5 @@ export const schemaTypes = [
   page,
   siteSettings,
   homepage,
+  shopPage,
 ];
