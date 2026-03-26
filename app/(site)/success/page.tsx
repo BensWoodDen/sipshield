@@ -1,17 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 import { useCartStore } from "@/lib/cart-store";
 
-export default function SuccessPage() {
+function SuccessContent() {
   const clearCart = useCartStore((s) => s.clearCart);
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const confirmed = useRef(false);
 
-  // Clear cart on successful checkout
   useEffect(() => {
     clearCart();
-  }, [clearCart]);
+
+    // Confirm order in Supabase (dev mode — webhook handles this in prod)
+    if (sessionId && !confirmed.current) {
+      confirmed.current = true;
+      fetch("/api/order/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      }).catch(() => {
+        // Non-critical — Stripe has the payment regardless
+      });
+    }
+  }, [clearCart, sessionId]);
 
   return (
     <main className="max-w-[600px] mx-auto px-6 py-24 text-center">
@@ -36,5 +51,13 @@ export default function SuccessPage() {
         Back to Shop
       </Link>
     </main>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense>
+      <SuccessContent />
+    </Suspense>
   );
 }
