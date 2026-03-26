@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { CartButton } from "./cart-button";
 import { CartDrawer } from "./cart-drawer";
@@ -20,6 +20,33 @@ export function Header() {
   const items = useCartStore((s) => s.items);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const handleCheckout = useCallback(async () => {
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((item) => ({
+            stripePriceId: item.stripePriceId,
+            quantity: item.quantity,
+            name: item.name,
+            variant: item.variant,
+            personalisationText: item.personalisationText,
+            personalisationImage: item.personalisationImage,
+          })),
+        }),
+      });
+      const { url } = await res.json();
+      if (url) {
+        window.location.href = url;
+      }
+    } catch {
+      setCheckoutLoading(false);
+    }
+  }, [items]);
 
   useEffect(() => {
     function handleScroll() {
@@ -73,6 +100,8 @@ export function Header() {
         items={items}
         onUpdateQuantity={updateQuantity}
         onRemove={removeItem}
+        onCheckout={handleCheckout}
+        checkoutLoading={checkoutLoading}
       />
     </>
   );

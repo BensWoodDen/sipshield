@@ -20,6 +20,8 @@ interface CartDrawerProps {
   items: CartItem[];
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
+  onCheckout: () => void;
+  checkoutLoading?: boolean;
 }
 
 export function CartDrawer({
@@ -28,6 +30,8 @@ export function CartDrawer({
   items,
   onUpdateQuantity,
   onRemove,
+  onCheckout,
+  checkoutLoading,
 }: CartDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -212,8 +216,12 @@ export function CartDrawer({
             <p className="text-sm text-neutral-400 mb-4">
               Shipping calculated at checkout
             </p>
-            <button className="flex items-center justify-center w-full py-3.5 bg-forest-500 text-white font-medium rounded-md shadow-sm hover:bg-forest-600 hover:shadow-md transition-[background-color,box-shadow] duration-100 cursor-pointer">
-              Proceed to Checkout
+            <button
+              onClick={onCheckout}
+              disabled={checkoutLoading}
+              className="flex items-center justify-center w-full py-3.5 bg-forest-500 text-white font-medium rounded-md shadow-sm hover:bg-forest-600 hover:shadow-md transition-[background-color,box-shadow] duration-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {checkoutLoading ? "Redirecting…" : "Proceed to Checkout"}
             </button>
           </div>
         )}
