@@ -18,16 +18,12 @@ function toCardProduct(
   const w = layout === "featured" ? 900 : 600;
   const h = layout === "featured" ? 600 : 600;
 
-  const stripePrice = p.stripePriceId
-    ? stripePrices?.get(p.stripePriceId)
-    : undefined;
-
   return {
     id: p._id,
     name: p.name,
     slug: p.slug.current,
     variant: p.variant || "",
-    price: stripePrice ?? p.price ?? 0,
+    price: (p.stripePriceId ? stripePrices?.get(p.stripePriceId) : undefined) ?? 0,
     stripePriceId: p.stripePriceId ?? "",
     description: p.description,
     image: img
@@ -42,7 +38,7 @@ function toCardProduct(
     variants: p.variants?.map((v) => ({
       _key: v._key,
       name: v.name,
-      price: (v.stripePriceId ? stripePrices?.get(v.stripePriceId) : undefined) ?? v.price ?? 0,
+      price: (v.stripePriceId ? stripePrices?.get(v.stripePriceId) : undefined) ?? 0,
       stripePriceId: v.stripePriceId,
     })),
   };

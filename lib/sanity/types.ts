@@ -5,7 +5,6 @@ export type SanityImageSource = Record<string, any>;
 export interface ProductVariant {
   _key: string;
   name: string;
-  price?: number;
   stripePriceId?: string;
 }
 
@@ -21,7 +20,6 @@ export interface SanityProduct {
   slug: { current: string };
   description?: string;
   variant: string;
-  price?: number;
   stripePriceId?: string;
   images?: SanityImageSource[];
   tag?: string;

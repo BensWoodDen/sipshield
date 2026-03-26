@@ -32,12 +32,6 @@ export const product = defineType({
       type: "string",
     }),
     defineField({
-      name: "price",
-      title: "Price (£)",
-      type: "number",
-      validation: (rule) => rule.required().positive(),
-    }),
-    defineField({
       name: "stripePriceId",
       title: "Stripe Price ID",
       type: "string",
@@ -62,23 +56,13 @@ export const product = defineType({
               validation: (rule) => rule.required(),
             }),
             defineField({
-              name: "price",
-              title: "Price (£)",
-              type: "number",
-              validation: (rule) => rule.required().positive(),
-            }),
-            defineField({
               name: "stripePriceId",
               title: "Stripe Price ID",
               type: "string",
             }),
           ],
           preview: {
-            select: { title: "name", subtitle: "price" },
-            prepare: ({ title, subtitle }) => ({
-              title,
-              subtitle: subtitle ? `£${subtitle}` : undefined,
-            }),
+            select: { title: "name" },
           },
         },
       ],

@@ -10,7 +10,6 @@ const homepageQuery = `*[_type == "homepage"][0]{
     slug,
     description,
     variant,
-    price,
     stripePriceId,
     images,
     tag,
@@ -45,13 +44,12 @@ const shopPageQuery = `{
     name,
     slug,
     description,
-    "products": *[_type == "product" && references(^._id)] | order(price asc) {
+    "products": *[_type == "product" && references(^._id)] | order(name asc) {
       _id,
       name,
       slug,
       description,
       variant,
-      price,
       stripePriceId,
       images,
       tag,
