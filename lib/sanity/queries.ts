@@ -1,5 +1,5 @@
 import { sanityClient } from "./client";
-import type { HomepageData, SiteSettings, ShopPageData, AboutPageData, FaqPageData } from "./types";
+import type { HomepageData, SiteSettings, ShopPageData, AboutPageData, FaqPageData, ContactPageData } from "./types";
 
 const homepageQuery = `*[_type == "homepage"][0]{
   hero,
@@ -83,4 +83,10 @@ const shopPageQuery = `{
 
 export async function getShopPage(): Promise<ShopPageData> {
   return sanityClient.fetch(shopPageQuery);
+}
+
+const contactPageQuery = `*[_type == "contactPage"][0]{ opener }`;
+
+export async function getContactPage(): Promise<ContactPageData | null> {
+  return sanityClient.fetch(contactPageQuery);
 }

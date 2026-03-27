@@ -131,3 +131,11 @@ export interface FaqPageData {
     buttonLink: string;
   };
 }
+
+export interface ContactPageData {
+  opener?: {
+    kicker: string;
+    headline: string;
+    body: string;
+  };
+}
