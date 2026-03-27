@@ -57,6 +57,43 @@ export interface SiteSettings {
   };
 }
 
+export interface AboutPageData {
+  opener?: {
+    kicker: string;
+    headline: string;
+    body: string;
+  };
+  story?: {
+    heading: string;
+    body: string;
+    photo?: SanityImageSource;
+    photoAlt?: string;
+  };
+  process?: {
+    heading: string;
+    steps: Array<{
+      _key: string;
+      title: string;
+      description: string;
+      image?: SanityImageSource;
+    }>;
+  };
+  values?: {
+    heading: string;
+    items: Array<{
+      _key: string;
+      title: string;
+      description: string;
+    }>;
+  };
+  cta?: {
+    heading: string;
+    body: string;
+    buttonLabel: string;
+    buttonLink: string;
+  };
+}
+
 export interface ShopPageHero {
   heroKicker?: string;
   heroHeadline: string;
@@ -74,4 +111,23 @@ export interface ProductFamily {
 export interface ShopPageData {
   hero: ShopPageHero | null;
   families: ProductFamily[];
+}
+
+export interface FaqPageData {
+  opener?: {
+    kicker: string;
+    headline: string;
+    body: string;
+  };
+  faqs?: Array<{
+    _key: string;
+    question: string;
+    answer: string;
+  }>;
+  cta?: {
+    heading: string;
+    body: string;
+    buttonLabel: string;
+    buttonLink: string;
+  };
 }
