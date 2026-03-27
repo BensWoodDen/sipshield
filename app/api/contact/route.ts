@@ -77,6 +77,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Server-side length limits (client has maxLength but API must enforce too)
+  if (name.trim().length > 200 || message.trim().length > 5000) {
+    return NextResponse.json(
+      { error: "Name or message is too long." },
+      { status: 400 }
+    );
+  }
+
   // Rate limit
   const ip = getClientIp(request);
   if (isRateLimited(ip)) {
@@ -103,7 +111,7 @@ export async function POST(request: NextRequest) {
       from: "SipShield <noreply@sipshield.co.uk>",
       to: "ben@sipshield.co.uk",
       replyTo: email.trim(),
-      subject: `New enquiry from ${name.trim()}`,
+      subject: `New enquiry from ${name.trim().replace(/[\r\n]/g, "")}`,
       text: `Name: ${name.trim()}\nEmail: ${email.trim()}\n\n${message.trim()}`,
     });
   } catch (err) {
