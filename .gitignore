@@ -52,3 +52,6 @@ tmp-images/
 
 # MCP config (contains project-specific URLs)
 .mcp.json
+
+# Local Netlify folder
+.netlify
