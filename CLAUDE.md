@@ -35,6 +35,7 @@ Two Netlify sites deploy from different branches:
 | **Domain** | `dev.sipshield.co.uk` | `sipshield.co.uk` |
 | **Stripe** | Test keys | Live keys |
 | **Supabase schema** | `dev` (via `SUPABASE_SCHEMA=dev`) | `public` (default) |
+| **Contact email** | `jess@complikey.dev` (via `CONTACT_EMAIL`) | `ben@sipshield.co.uk` (default) |
 
 ### Workflow
 - All development happens on `dev` branch. Push triggers dev site rebuild.
@@ -160,6 +161,7 @@ Required in Netlify env vars (and `.env.local` for dev):
 - `AUTH_PEPPER` - Secret pepper for argon2id password hashing (server-side only)
 - `SESSION_SECRET` - 32+ char secret for iron-session cookie encryption (server-side only)
 - `RESEND_API_KEY` - Resend API key for contact form email delivery (server-side only)
+- `CONTACT_EMAIL` - Contact form recipient (defaults to `ben@sipshield.co.uk` when unset; set to `jess@complikey.dev` on dev site)
 - `SUPABASE_SCHEMA` - Override Supabase schema (set to `dev` on Netlify dev deploy; omit for production to use default NODE_ENV logic)
 
 ## Code Style
