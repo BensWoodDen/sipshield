@@ -38,5 +38,8 @@ next-env.d.ts
 # screenshots
 *.png
 
+# temp files
+tmp/
+
 # obsidian
 docs/.obsidian/

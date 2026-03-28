@@ -49,11 +49,15 @@ export async function POST(request: NextRequest) {
     }
 
     if (item.personalisationImage && supabase) {
-      // Generate a 7-day signed URL for Ben to download the image
       const filename = item.personalisationImage.replace(
         "personalisation-uploads/",
         ""
       );
+
+      // Store raw path for dashboard (generates fresh signed URLs at render time)
+      metadata[`personalisation_path_${i}`] = filename;
+
+      // Generate a 7-day signed URL for Ben to see in Stripe Dashboard
       const { data } = await supabase.storage
         .from("personalisation-uploads")
         .createSignedUrl(filename, 60 * 60 * 24 * 7); // 7 days

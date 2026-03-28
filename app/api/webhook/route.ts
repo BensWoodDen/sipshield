@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
   })) ?? [];
 
   const personalisation: Record<string, { text?: string; image?: string }> = {};
+  const personalisationPaths: Record<string, string> = {};
   if (fullSession.metadata) {
     for (const [key, value] of Object.entries(fullSession.metadata)) {
       const textMatch = key.match(/^personalisation_text_(\d+)$/);
@@ -88,6 +89,10 @@ export async function POST(request: NextRequest) {
       if (imageMatch) {
         const idx = imageMatch[1];
         personalisation[idx] = { ...personalisation[idx], image: value };
+      }
+      const pathMatch = key.match(/^personalisation_path_(\d+)$/);
+      if (pathMatch) {
+        personalisationPaths[pathMatch[1]] = value;
       }
     }
   }
@@ -106,6 +111,7 @@ export async function POST(request: NextRequest) {
     shipping_address: shippingAddress,
     items,
     personalisation: Object.keys(personalisation).length > 0 ? personalisation : null,
+    personalisation_paths: Object.keys(personalisationPaths).length > 0 ? personalisationPaths : null,
     total_pence: fullSession.amount_total,
     status: "paid",
   });

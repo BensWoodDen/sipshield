@@ -30,7 +30,7 @@ export default async function Home() {
 
       {homepage?.featuredProducts && (
         <ProductGrid
-          heading="Featured Pieces"
+          heading="A few favourites"
           products={homepage.featuredProducts}
           stripePrices={stripePrices}
         />

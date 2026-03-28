@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════
+   SIPSHIELD DESIGN TOKENS
+   Tailwind v4 CSS-first configuration
+   ═══════════════════════════════════════════════ */
+
+@theme inline {
+  /* ── Oak / Amber Primary (hue 80) ── */
+  --color-oak-50:  oklch(0.97 0.02 80);
+  --color-oak-100: oklch(0.93 0.04 80);
+  --color-oak-200: oklch(0.87 0.07 80);
+  --color-oak-300: oklch(0.78 0.10 80);
+  --color-oak-400: oklch(0.68 0.12 80);
+  --color-oak-500: oklch(0.58 0.13 80);
+  --color-oak-600: oklch(0.48 0.11 80);
+  --color-oak-700: oklch(0.40 0.09 80);
+  --color-oak-800: oklch(0.32 0.07 80);
+  --color-oak-900: oklch(0.25 0.06 80);
+
+  /* ── Forest Green CTA (hue 155) ── */
+  --color-forest-50:  oklch(0.96 0.03 155);
+  --color-forest-100: oklch(0.91 0.06 155);
+  --color-forest-200: oklch(0.84 0.10 155);
+  --color-forest-300: oklch(0.74 0.13 155);
+  --color-forest-400: oklch(0.64 0.15 155);
+  --color-forest-500: oklch(0.55 0.15 155);
+  --color-forest-600: oklch(0.46 0.13 155);
+  --color-forest-700: oklch(0.38 0.11 155);
+  --color-forest-800: oklch(0.30 0.08 155);
+  --color-forest-900: oklch(0.23 0.06 155);
+
+  /* ── Semantic Colours ── */
+  --color-cream:    oklch(0.97 0.01 90);
+  --color-charcoal: oklch(0.25 0.01 260);
+
+  /* ── Tinted Neutrals (warm, hue 80) ── */
+  --color-neutral-50:  oklch(0.98 0.005 80);
+  --color-neutral-100: oklch(0.95 0.008 80);
+  --color-neutral-200: oklch(0.90 0.010 80);
+  --color-neutral-300: oklch(0.82 0.010 80);
+  --color-neutral-400: oklch(0.70 0.010 80);
+  --color-neutral-500: oklch(0.56 0.010 80);
+  --color-neutral-600: oklch(0.44 0.010 80);
+  --color-neutral-700: oklch(0.36 0.010 80);
+  --color-neutral-800: oklch(0.26 0.010 80);
+  --color-neutral-900: oklch(0.18 0.008 80);
+
+  /* ── Feedback Colours ── */
+  --color-success: oklch(0.62 0.17 145);
+  --color-warning: oklch(0.75 0.15 75);
+  --color-error:   oklch(0.58 0.20 25);
+
+  /* ── Typography ── */
+  --font-display: var(--font-dm-serif-display), Georgia, serif;
+  --font-body: var(--font-plus-jakarta-sans), system-ui, sans-serif;
+
+  /* ── Radii ── */
+  --radius-sm:   0.25rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   0.75rem;
+  --radius-xl:   1rem;
+  --radius-2xl:  1.5rem;
+  --radius-full: 9999px;
+
+  /* ── Shadows (oak-tinted) ── */
+  --shadow-sm:
+    0 1px 2px oklch(0.30 0.03 80 / 0.06),
+    0 1px 3px oklch(0.30 0.03 80 / 0.10);
+  --shadow-md:
+    0 2px 4px oklch(0.30 0.03 80 / 0.06),
+    0 4px 8px oklch(0.30 0.03 80 / 0.10);
+  --shadow-lg:
+    0 4px 8px oklch(0.30 0.03 80 / 0.06),
+    0 8px 24px oklch(0.30 0.03 80 / 0.12);
+  --shadow-focus:
+    0 0 0 3px oklch(0.55 0.15 155 / 0.40);
+}
+
+/* ── Motion Tokens ── */
+:root {
+  --duration-instant: 100ms;
+  --duration-fast:    200ms;
+  --duration-normal:  300ms;
+  --duration-slow:    500ms;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast:    0ms;
+    --duration-normal:  0ms;
+    --duration-slow:    0ms;
+  }
+}
+
+/* ── Base Styles ── */
+body {
+  font-family: var(--font-body);
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -42,7 +42,7 @@ export function StoryBand({ storyBand }: StoryBandProps) {
               href={storyBand.linkTarget}
               className="text-forest-300 font-medium hover:text-forest-200 transition-colors duration-100 focus-visible:outline-none focus-visible:shadow-focus w-fit"
             >
-              {storyBand.linkText || "Learn more"} →
+              {storyBand.linkText || "More about Ben"} &rarr;
             </Link>
           )}
         </div>

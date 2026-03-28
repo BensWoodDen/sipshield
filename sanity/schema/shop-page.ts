@@ -11,13 +11,13 @@ export const shopPage = defineType({
       name: "heroKicker",
       title: "Hero Kicker",
       type: "string",
-      initialValue: "The Collection",
+      initialValue: "The full range",
     }),
     defineField({
       name: "heroHeadline",
       title: "Hero Headline",
       type: "string",
-      initialValue: "Handcrafted Oak Drink Covers",
+      initialValue: "Every style we make",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -26,7 +26,7 @@ export const shopPage = defineType({
       type: "text",
       rows: 2,
       initialValue:
-        "Each piece is cut, shaped and finished by hand in Bournemouth. No two are exactly the same.",
+        "Solid British oak, made one at a time in Bournemouth. Pick a style and add personalisation if you want it.",
     }),
   ],
   preview: {
