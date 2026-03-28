@@ -12,10 +12,10 @@ export default async function SiteLayout({
     settings?.socialLinks?.instagram || "https://instagram.com/sipshield";
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      {children}
+      <main className="flex-1">{children}</main>
       <Footer instagramUrl={instagramUrl} />
-    </>
+    </div>
   );
 }
