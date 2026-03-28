@@ -5,6 +5,9 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
+const CONTACT_EMAIL =
+  process.env.CONTACT_EMAIL || "ben@sipshield.co.uk";
+
 /* ── Rate limiting ── */
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 3;
@@ -109,7 +112,7 @@ export async function POST(request: NextRequest) {
   try {
     await resend.emails.send({
       from: "SipShield <noreply@sipshield.co.uk>",
-      to: "ben@sipshield.co.uk",
+      to: CONTACT_EMAIL,
       replyTo: email.trim(),
       subject: `New enquiry from ${name.trim().replace(/[\r\n]/g, "")}`,
       text: `Name: ${name.trim()}\nEmail: ${email.trim()}\n\n${message.trim()}`,
