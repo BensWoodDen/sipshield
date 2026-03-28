@@ -98,7 +98,7 @@ docs/
 - Prod: Stripe webhook at `/api/webhook` handles `checkout.session.completed` events
 - Both routes have duplicate protection via `stripe_session_id` unique constraint
 - Raw Supabase Storage paths stored in `personalisation_paths` column — dashboard generates fresh signed URLs at render time (avoids 7-day expiry)
-- **Schema separation:** `lib/supabase.ts` uses `dev` schema when `NODE_ENV !== "production"`, `public` schema in production. Both schemas have identical table structures. Schema changes must be applied to both.
+- **Schema separation:** `lib/supabase.ts` checks `SUPABASE_SCHEMA` env var first, then falls back to NODE_ENV (`dev` when not production, `public` in production). Both schemas have identical table structures. Schema changes must be applied to both.
 
 ### Admin dashboard at `/admin`
 - Custom auth with argon2id + pepper (`@node-rs/argon2` WASM) and `iron-session` encrypted cookies
@@ -111,7 +111,7 @@ docs/
 ## Key Files
 
 - `lib/stripe.ts` - Stripe client + `fetchStripePrices()` for build-time price fetching
-- `lib/supabase.ts` - Supabase server client (dev/public schema via NODE_ENV, gracefully handles missing env vars during build)
+- `lib/supabase.ts` - Supabase server client (schema via SUPABASE_SCHEMA or NODE_ENV, gracefully handles missing env vars during build)
 - `lib/sanity/queries.ts` - All GROQ queries for fetching products and pages
 - `lib/cart-store.ts` - Zustand store; cart persists in localStorage; includes personalisation fields
 - `app/api/checkout/route.ts` - Creates Stripe Checkout Session with line items + personalisation metadata
@@ -137,6 +137,7 @@ Required in Netlify env vars (and `.env.local` for dev):
 - `AUTH_PEPPER` - Secret pepper for argon2id password hashing (server-side only)
 - `SESSION_SECRET` - 32+ char secret for iron-session cookie encryption (server-side only)
 - `RESEND_API_KEY` - Resend API key for contact form email delivery (server-side only)
+- `SUPABASE_SCHEMA` - Override Supabase schema (set to `dev` on Netlify dev deploy; omit for production to use default NODE_ENV logic)
 
 ## Code Style
 

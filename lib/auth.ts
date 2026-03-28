@@ -7,7 +7,7 @@ export interface SessionData {
 }
 
 export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET ?? "fallback-secret-do-not-use-in-prod",
+  password: process.env.SESSION_SECRET!,
   cookieName: "sipshield-admin",
   ttl: 60 * 60 * 24 * 7, // 7 days
   cookieOptions: {

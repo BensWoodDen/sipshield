@@ -43,3 +43,12 @@ tmp/
 
 # obsidian
 docs/.obsidian/
+
+# temp images
+tmp-images/
+
+# IDE
+.idea/
+
+# MCP config (contains project-specific URLs)
+.mcp.json
