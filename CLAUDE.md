@@ -24,6 +24,29 @@ When making implementation decisions, check the relevant ADR first — it docume
 | `npx sanity dev` | Start Sanity Studio locally |
 | `pm2 restart all --update-env` | Restart dev server (picks up .env.local changes) |
 
+## Deployment
+
+Two Netlify sites deploy from different branches:
+
+| | Dev | Prod |
+|---|---|---|
+| **Site** | sipshield-dev | sipshield-prod |
+| **Branch** | `dev` | `main` |
+| **Domain** | `dev.sipshield.co.uk` | `sipshield.co.uk` |
+| **Stripe** | Test keys | Live keys |
+| **Supabase schema** | `dev` (via `SUPABASE_SCHEMA=dev`) | `public` (default) |
+
+### Workflow
+- All development happens on `dev` branch. Push triggers dev site rebuild.
+- To deploy to production: merge `dev` into `main`.
+- Local CLI is linked to the dev site (`pnpm netlify status` to verify).
+
+### Environment variables
+- Shared vars (Sanity, Supabase, auth) have the same values on both sites.
+- Per-site vars (Stripe keys, site URL, webhook secret, build hook) differ.
+- **Never set `SUPABASE_SCHEMA` on prod** -- omitting it defaults to `public` via NODE_ENV.
+- Env vars are managed via `pnpm netlify env:set` (dev site) or Netlify Dashboard (prod site).
+
 ## Architecture
 
 ```
